@@ -13,9 +13,9 @@ import javax.swing.event.*;
 public class POODuckGUI extends JFrame{	
 	
 	private Container contentPane;
-	private MenuInicial menu;	
-	private Tablero tablero;
+	private MenuInicial menu;
 	private POODuck juego;
+	private JLayeredPane tablero;
 	
 	public POODuckGUI(){
 		prepareElementos();
@@ -27,15 +27,19 @@ public class POODuckGUI extends JFrame{
 	}
 	
 	private void prepareElementos(){
-		contentPane = getContentPane();		
+		contentPane = getContentPane();
 		setTitle("POODuck");
 		setResizable(false);
 		menu = new MenuInicial(this);
-		tablero = new Tablero();
-		contentPane.add(tablero);
 	}
 	
-	public void unJugador(){
+	public void unJugador(int nump){
+		setVisible(true);
+		ajustarTamano();
+		centrar();		
+	}
+	
+	public void unJugador(String dif){
 		setVisible(true);
 		ajustarTamano();
 		centrar();		
@@ -56,22 +60,16 @@ public class POODuckGUI extends JFrame{
 		addWindowListener(oyenteCerrarVentana);
 		MouseAdapter disparadorMouse = new MouseAdapter() {
 			public void mouseClicked(MouseEvent arg0) {
-				disparo(arg0.getX(),arg0.getY());
+				//disparo(arg0.getX(),arg0.getY());
 			}
 			
 		};
 		addMouseListener(disparadorMouse);
 	}
 	
-	private void disparo(int x, int y) {
-		ArrayList<PatoGUI> patosGUI = tablero.getPatos();
-		
-	}
-	
 	private void salga(){
 		int respuesta = JOptionPane.showConfirmDialog(this,"Are you sure?","Exit",JOptionPane.YES_NO_OPTION);
 		if(respuesta == JOptionPane.YES_OPTION){
-			tablero = null;
 			juego = null;
 			setVisible(false);
 			menu.setVisible(true);
