@@ -141,7 +141,7 @@ public class POODuck {
 		return patos.get(numPato).isAlive();
 	}
 	
-	public String getTipo(int numPato) {
+	public int getTipo(int numPato) {
 		return patos.get(numPato).getTipo();
 	}
 	
