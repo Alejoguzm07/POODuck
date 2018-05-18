@@ -26,8 +26,8 @@ public class Pato implements Impactable{
 		direccion = 2;
 	}
 	
-	public String getTipo() {
-		return "Recursos/ImagenesPatoNormal";
+	public int getTipo() {
+		return 1;
 	}
 	
 	public int getDelta() {
