@@ -1,5 +1,5 @@
 package aplicacion;
 
-public class PatoBoss {
+public class PatoBoss extends Pato{
 
 }
