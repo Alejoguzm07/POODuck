@@ -34,6 +34,7 @@ public class SeleccionUnJugador extends JDialog{
 	
 	private void prepareElementos() {
 		setTitle("UN JUGADOR");
+		setResizable(false);
 		ajustarTamano();
 		centrar();
 		botones = new JPanel() {
@@ -147,13 +148,22 @@ public class SeleccionUnJugador extends JDialog{
 	}
 	
 	private void unJugadorUno() {
-		setVisible(false);
-		menu.setVisible(false);
-		juego.multijugador();
+		String[] options = {"2", "3"};
+		int seleccion = JOptionPane.showOptionDialog(null, "Seleccione el numero de patos", "Numero de patos", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);		
+		if(seleccion == 0) {
+			setVisible(false);
+			menu.setVisible(false);
+			juego.unJugador(2);
+		}
+		if(seleccion == 1) {
+			setVisible(false);
+			menu.setVisible(false);
+			juego.unJugador(3);
+		}
 	}
 
 	private void unJugadorDos() {
-		String[] options = {"Tranquilo", "Agresivo",};
+		String[] options = {"Tranquilo", "Agresivo"};
 		int seleccion = JOptionPane.showOptionDialog(null, "Seleccione el nivel de dificultad", "Dificultad", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 		if(seleccion == 0) {
 			/*setVisible(false);

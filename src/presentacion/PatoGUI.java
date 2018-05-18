@@ -11,133 +11,69 @@ import java.lang.*;
 
 public class PatoGUI extends Component{
 	
-	static int numImagen = 1;
-	static JPanel panel;
-	static int posCuerpoX;
+	private int numImagen = 1;
+	private JPanel panel;
+	private final String rutaCayendo = "/Cayendo/";
+	private final String rutaDerechaAbajo = "/DerechaAbajo/";
+	private final String rutaDerechaArriba = "/DerechaArriba/";
+	private final String rutaIzquierdaAbajo = "/IzquierdaAbajo/";
+	private final String rutaIzquierdaArriba = "/IzquierdaArriba/";
+	private final String rutaImpactado = "/Impactado/";
 	static int posCuerpoY;
-	private static int moverFila;
-	private static int moverCol;
-	private static String ruta;
-	private static int speed;
-	private static boolean isAlive;
-	private static boolean impactado;
+	static int posCuerpoX;
+	private String ruta;
+	private String pato;
+	private int direccion;
 	
-	public PatoGUI(JPanel panel) {
+	public PatoGUI(JPanel panel, int[] pos, String tipo) {
 		this.setVisible(true);
 		this.panel = panel;
+		panel.add(this);
 		setBounds(0,0,55,55);
-		posCuerpoY = 600;
-		posCuerpoX = 300;
-		moverFila = 15;
-		moverCol = 15;
-		isAlive = true;
-		impactado = true;
+		posCuerpoX = pos[0];
+		posCuerpoY = pos[1];
+		pato = tipo;
+		direccion = 1;
+		ruta = tipo + rutaDerechaArriba;
 	}
 	
 	public void paint(Graphics g) {
 		ImageIcon imagenPatos = new ImageIcon(new ImageIcon(getClass().getResource(ruta+numImagen+".png")).getImage());
 		g.drawImage(imagenPatos.getImage(), posCuerpoX, posCuerpoY, 55, 55, this);
+	}	
+	
+	public void actualizar(int[] pos, int dir, boolean isAlive) {
+		posCuerpoX = pos[0];
+		posCuerpoY = pos[1];
+		direccion = dir;
+		pintar();
+		repaint();
 	}
 	
-	public void iniciar(String tipo, int velocidad) {
-		ruta = tipo;
-		speed = velocidad;
-		mover();
+	private void pintar() {
+		if(direccion == 1) {
+			ruta = pato + rutaIzquierdaArriba;
+		}
+		if(direccion == 2) {
+			ruta = pato + rutaDerechaArriba;
+		}
+		if(direccion == 3) {
+			ruta = pato + rutaDerechaAbajo;
+		}
+		if(direccion == 4) {
+			ruta = pato + rutaDerechaAbajo;
+		}
+		if(direccion == 6) {
+			ruta = pato + rutaIzquierdaAbajo;
+		}
+		if(direccion == 7) {
+			ruta = pato + rutaIzquierdaAbajo;
+		}
+		numImagen++;
+		if(numImagen > 4) {
+			numImagen = 1;
+		}
+		panel.repaint();
 	}
 	
-	public int getFila() {
-		return posCuerpoY;
-	}
-	
-	public int getCol() {
-		return posCuerpoX;
-	}
-	
-	public static Thread hiloVolar = new Thread(){
-		@Override
-		public void run() {
-			try {
-				while(isAlive) {
-					numImagen++;
-					if(numImagen == 4) {
-						numImagen = 1;
-					}
-					panel.repaint();
-					hiloVolar.sleep(speed);
-					controlarMovimiento();
-					posCuerpoX += moverCol;
-					posCuerpoY += moverFila;
-				}
-				impactado = true;
-				while(impactado) {
-					numImagen=1;
-					definirImpacto();
-					panel.repaint();
-					hiloVolar.sleep(150);
-				}
-				while(posCuerpoY <= panel.getHeight() - 10) {
-					numImagen++;
-					ruta = "ImagenesPatoDoble/Cayendo/";
-					if(numImagen == 4) {
-						numImagen = 1;
-					}
-					panel.repaint();
-					hiloVolar.sleep(60);
-					posCuerpoY += 10;
-				}
-				hiloVolar.sleep(5000);
-				posCuerpoY += 2000;
-				posCuerpoX += 2000;
-				panel.repaint();
-			}catch (InterruptedException ex) {
-				System.out.println(ex.getMessage());
-			}
-		}
-	};
-	
-	public static void mover() {
-		if(!hiloVolar.isAlive()) {
-			hiloVolar.start();
-		}
-	}
-	
-	private static void controlarMovimiento() {
-		if(posCuerpoY < 3) {
-			moverFila = 10;
-		}
-		if(posCuerpoX < 3) {
-			moverCol = 10;
-		}
-		if(posCuerpoY > 430) {
-			moverFila = -10;
-		}
-		if(posCuerpoX > 1200) {
-			moverCol = -10;
-		}
-		definirDireccion();
-	}
-	
-	private static void definirDireccion() {
-		if(moverFila > 0 && moverCol > 0) {
-			ruta = "ImagenesPatoDoble/DerechaAbajo/";
-		}
-		if(moverFila > 0 && moverCol < 0) {
-			ruta = "ImagenesPatoDoble/IzquierdaAbajo/";
-		}
-		if(moverFila < 0 && moverCol > 0) {
-			ruta = "ImagenesPatoDoble/DerechaArriba/";
-		}
-		if(moverFila < 0 && moverCol < 0) {
-			ruta = "ImagenesPatoDoble/IzquierdaArriba/";
-		}
-	}
-	
-	private static void definirImpacto() {
-		ruta = "ImagenesPatoDoble/Impactado/";
-		impactado = false;
-	}
-	
-	public void derribar() {
-		isAlive = false;
-	}
 }
