@@ -13,12 +13,6 @@ public class PatoGUI extends Component{
 	
 	private int numImagen = 1;
 	private JPanel panel;
-	private final String rutaCayendo = "/Cayendo/";
-	private final String rutaDerechaAbajo = "/DerechaAbajo/";
-	private final String rutaDerechaArriba = "/DerechaArriba/";
-	private final String rutaIzquierdaAbajo = "/IzquierdaAbajo/";
-	private final String rutaIzquierdaArriba = "/IzquierdaArriba/";
-	private final String rutaImpactado = "/Impactado/";
 	static int posCuerpoY;
 	static int posCuerpoX;
 	private String ruta;
