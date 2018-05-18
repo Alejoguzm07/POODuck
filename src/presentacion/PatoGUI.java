@@ -52,22 +52,22 @@ public class PatoGUI extends Component{
 	
 	private void pintar() {
 		if(direccion == 1) {
-			ruta = pato + rutaIzquierdaArriba;
+			izquierdaArriba();
 		}
 		if(direccion == 2) {
-			ruta = pato + rutaDerechaArriba;
+			derechaArriba();
 		}
 		if(direccion == 3) {
-			ruta = pato + rutaDerechaAbajo;
+			derechaAbajo();
 		}
 		if(direccion == 4) {
-			ruta = pato + rutaDerechaAbajo;
+			derechaAbajo(;
 		}
 		if(direccion == 6) {
-			ruta = pato + rutaIzquierdaAbajo;
+			izquierdaAbajo();
 		}
 		if(direccion == 7) {
-			ruta = pato + rutaIzquierdaAbajo;
+			izquierdaAbajo();
 		}
 		numImagen++;
 		if(numImagen > 4) {
@@ -75,5 +75,93 @@ public class PatoGUI extends Component{
 		}
 		panel.repaint();
 	}
+	
+	private void derechaAbajo() {
+		if(pato == 1) {
+			ruta = "ImagenesPatoNormal/DerechaAbajo/";
+		}
+		if(pato == 2) {
+			ruta = "ImagenesPatoVeloz/DerechaAbajo/";
+		}
+		if(pato == 3) {
+			ruta = "ImagenesPatoBlindado/DerechaAbajo/";
+		}
+		if(pato == 4) {
+			ruta = "ImagenesPatoBoss/DerechaAbajo/";
+		}
+	}
+	private void derechaArriba() {
+		if(pato == 1) {
+			ruta = "ImagenesPatoNormal/DerechaArriba/";
+		}
+		if(pato == 2) {
+			ruta = "ImagenesPatoVeloz/DerechaArriba/";
+		}
+		if(pato == 3) {
+			ruta = "ImagenesPatoBlindado/DerechaArriba/";
+		}
+		if(pato == 4) {
+			ruta = "ImagenesPatoBoss/DerechaArriba/";
+		}		
+	}
+	
+	private void izquierdaArriba() {
+		if(pato == 1) {
+			ruta = "ImagenesPatoNormal/IzquierdaArriba/";
+		}
+		if(pato == 2) {
+			ruta = "ImagenesPatoVeloz/IzquierdaArriba/";
+		}
+		if(pato == 3) {
+			ruta = "ImagenesPatoBlindado/IzquierdaArriba/";
+		}
+		if(pato == 4) {
+			ruta = "ImagenesPatoBoss/IzquierdaArriba/";
+		}		
+	}
+	
+	private void izquierdaAbajo() {
+		if(pato == 1) {
+			ruta = "ImagenesPatoNormal/IzquierdaAbajo/";
+		}
+		if(pato == 2) {
+			ruta = "ImagenesPatoVeloz/IzquierdaAbajo/";
+		}
+		if(pato == 3) {
+			ruta = "ImagenesPatoBlindado/IzquierdaAbajo/";
+		}
+		if(pato == 4) {
+			ruta = "ImagenesPatoBoss/IzquierdaAbajo/";
+		}		
+	}
+	
+	private void cayendo() {
+		if(pato == 1) {
+			ruta = "ImagenesPatoNormal/Cayendo/";
+		}
+		if(pato == 2) {
+			ruta = "ImagenesPatoVeloz/Cayendo/";
+		}
+		if(pato == 3) {
+			ruta = "ImagenesPatoBlindado/Cayendo/";
+		}
+		if(pato == 4) {
+			ruta = "ImagenesPatoBoss/Cayendo/";
+		}		
+	}
+	
+	private void impactadoP() {
+		if(pato == 1) {
+			ruta = "ImagenesPatoNormal/Impactado/";
+		}
+		if(pato == 2) {
+			ruta = "ImagenesPatoVeloz/Impactado/";
+		}
+		if(pato == 3) {
+			ruta = "ImagenesPatoBlindado/Impactado/";
+		}
+		if(pato == 4) {
+			ruta = "ImagenesPatoBoss/Impactado/";
+		}	
 	
 }
