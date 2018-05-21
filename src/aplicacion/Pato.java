@@ -3,35 +3,30 @@ package aplicacion;
 import java.util.Random;
 
 public class Pato implements Impactable{
-	private int vida;
-	private int puntaje;
-	private boolean vivo;
-	private int delta;
-	private int cuerpoX;
-	private int cuerpoY;
-	private int cabezaX;
-	private int cabezaY;
-	private int cambioPosicion;
-	private final int[] direcciones = {1,7,6,2,3,4};
-	private int direccion;
-	private int ancho;
-	private int alto;
+	protected int vida;
+	protected int puntaje;
+	protected boolean vivo;
+	protected int cuerpoX;
+	protected int cuerpoY;
+	protected int cabezaX;
+	protected int cabezaY;
+	protected int velocidad;
+	protected int tamano;
 	
 	public Pato() {
 		vida = 1;
 		puntaje = 100;
 		vivo = true;
-		delta = 10;
-		cambioPosicion = 0;
-		direccion = 2;
+		velocidad = 10;
+		tamano = 55;
 	}
 	
 	public int getTipo() {
 		return 1;
 	}
 	
-	public int getDelta() {
-		return delta;
+	public int getVelocidad() {
+		return velocidad;
 	}
 	
 	public int[] getCuerpo() {
@@ -53,100 +48,57 @@ public class Pato implements Impactable{
 	}
 	
 	public void ubicar(int[] posiciones) {
-		cuerpoX = posiciones[0];
-		cuerpoY = posiciones[1];
-		cabezaX = posiciones[2];
-		cabezaY = posiciones[3];
-	}
-
-	public void impacto(int x, int y) {
-		int distCabeza = (int) Math.hypot(cabezaX - x, cabezaY - y);
-		int distCuerpo = (int) Math.hypot(cuerpoX - x, cuerpoY - y);
-		if(distCabeza <= 10 || distCuerpo <= 40) {
-			vida--;
-			muerto();
+		cuerpoX = posiciones[0] + (tamano/2);
+		cuerpoY = posiciones[1] + (tamano/2);
+		int moverX = posiciones[2];
+		int moverY = posiciones[3];
+		if(moverX >= 0 && moverY < 0) {
+			cabezaX = (posiciones[0] + tamano) - (4*(tamano/10));
+			cabezaY = posiciones[1] + (4*(tamano/10));
 		}
-	}
-
-	private void muerto() {
-		if(vida == 0) {
-			vivo = false;
-			direccion = 5;
-		}		
-	}
-
-	public void vayase() {
+		if(moverX >= 0 && moverY >= 0) {
+			cabezaX = (posiciones[0] + tamano) - (4*(tamano/10));
+			cabezaY = posiciones[1] + (tamano/2);
+		}
+		if(moverX < 0 && moverY < 0) {
+			cabezaX = posiciones[0] + (3*(tamano/10));
+			cabezaY = posiciones[1] + (4*(tamano/10));
+		}
+		if(moverX < 0 && moverY >= 0) {
+			cabezaX = posiciones[0] + (tamano/6);
+			cabezaY = posiciones[1] + (tamano/2);
+		}
 		
 	}
-	
-	public void mover() {
-		if(direccion == 5) {
-			desplomar();
-		}
-		else {
-			cambioPosicion++;
-			if(cambioPosicion == 30 || cabezaX > 1000 || cabezaX < 0 || cabezaY < 0 || cuerpoY > 12 ) {
-				cambiarDireccion();
+
+	public int impacto(int x, int y, int tipo) {
+		int pun = 0;
+		if(vivo) {
+			int radio = tamano / 2;
+			if(tipo == 2) {
+				radio = 5 * 55;
 			}
-			cambiarPosicion();
-		}
-	}
-	
-	private void desplomar() {
-		if(cuerpoY <= 12) {
-			cabezaY -= delta;
-			cuerpoY -= delta;
-		}
-	}
-
-	private void cambiarPosicion() {
-		switch ( direccion ) {
-			case 1:
-				cabezaX -= delta;
-				cabezaY += delta;
-				cuerpoX -= delta;
-				cuerpoY += delta;
-			case 2:
-				cabezaX += delta;
-				cabezaY += delta;
-				cuerpoX += delta;
-				cuerpoY += delta;
-			case 3:
-				cabezaX += delta;
-				cuerpoX += delta;
-			case 4: 
-				cabezaX += delta;
-				cuerpoX += delta;
-				cabezaY -= delta;
-				cuerpoY -= delta;
-			case 6: 
-				cabezaX -= delta;
-				cuerpoX -= delta;
-				cabezaY -= delta;
-				cuerpoY -= delta;
-			case 7:
-				cabezaX -= delta;
-				cuerpoX -= delta;
-		}
-	}
-
-	private void cambiarDireccion() {
-		Random rnd = new Random();
-		int num = rnd.nextInt()%6;
-		if(direcciones[num] != direccion) {
-			direccion = direcciones[num];
-			switch ( direccion ) {
-				case 1: 
-				case 2: 
-				case 3: 
-				case 4: 
-				case 6: 
-				case 7: 
+			int distCabeza = (int) Math.hypot(cabezaX - x, cabezaY - y);
+			int distCuerpo = (int) Math.hypot(cuerpoX - x, cuerpoY - y);
+			if(distCabeza <= radio / 2 || distCuerpo <= radio) {
+				vida--;
+				if(muerto()) {
+					pun = puntaje;
+				}
 			}
 		}
+		return pun;		
+	}
+
+	protected boolean muerto() {
+		if(vida == 0) {
+			vivo = false;
+			return true;
+		}
+		return false;
 	}
 	
-	public int getDireccion() {
-		return direccion;
+	public int getTamano() {
+		return tamano;
 	}
 }

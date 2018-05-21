@@ -7,47 +7,73 @@ public class POODuck {
 	private ArrayList<Pato> patos;
 	private int rondas;
 	private int tandas;
-	private Jugador jugadorUno;
+	private ArrayList<Jugador> jugadores;
 	private Timer tiempoTanda;
+	private int numBala;
 	private final char[] dificultad = {'N', 'V', 'D', 'b', 'B'};
+	private char modo;
+	private int patosMuertos;
+	private boolean finalizado;
 	
 	public POODuck() {
 		patos = new ArrayList<Pato>();
-		rondas = 0;
+		rondas = 1;
 		tandas = 0;
-		tiempoTanda = new Timer();
-		
-	}	
+		patosMuertos = 0;
+		finalizado = false;
+		tiempoTanda = new Timer();		
+	}
+	
+	public void iniciarJuego(char md) {
+		modo = md;
+		jugadores = new ArrayList<Jugador>();
+		if(modo == 'C') {
+			jugadores.add(new Cazador(patos));
+		}
+		if(modo == 'V') {
+			jugadores.add(new Cazador(patos));
+			jugadores.add(new Pajaro());
+		}
+		if(modo == 'c') {
+			jugadores.add(new Cazador(patos));
+			jugadores.add(new Cazador(patos));
+		}	
+	}
 	
 	/**
 	 * inicia una ronda de juego.
 	 * @param numPatos, numero de patos en cada tanda.
 	 */
 	public void inicieRonda(int numPatos) {
-		rondas++;
-		tandas = 0;
-		TimerTask tarea = new TimerTask() {
-			@Override
-			public void run() {
-				tandas++;
-				if((numPatos == 2 && tandas > 5) || (numPatos == 3 && tandas > 3)) {
-					tiempoTanda.cancel();
-				}
-				desaparecerPatos();
-				inicieTanda(numPatos);
-			}
-			
-		};
-		tiempoTanda.schedule(tarea, 0, 15000);		
+		if(gano() && finalizado) {
+			rondas++;
+			tandas = 0;
+			patosMuertos = 0;
+			finalizado = false;
+		}
+		if(gano()) {
+			inicieTanda(numPatos);
+		}
 	}
 	
-	/**
-	 * Le indica a todos los patos desparecer del tablero.
-	 */
-	private void desaparecerPatos() {
-		for(Pato p: patos) {
-			p.vayase();
+	public boolean getFinalizado() {
+		return finalizado;
+	}
+	
+	public boolean gano() {
+		boolean flag = true;
+		if(finalizado) {
+			if((rondas > 0 && rondas <= 8) && (patosMuertos < 4)) {
+				flag = false;
+			}
+			if((rondas > 8 && rondas <= 15) && (patosMuertos < 8)) {
+				flag = false;
+			}
+			if(rondas > 15  && (patosMuertos < 9)) {
+				flag = false;
+			}
 		}
+		return flag;
 	}
 	
 	/**
@@ -55,8 +81,21 @@ public class POODuck {
 	 * @param numPatos, numero de patos en cada tanda.
 	 */
 	private void inicieTanda(int numPatos) {
-		//jugadorUno.recargue();
+		tandas++;
 		crearPatos(numPatos);
+		for(int i = 0; i < jugadores.size(); i++) {
+			jugadores.get(i).recargar(patos);
+		}
+		if(numPatos == 2) {
+			if(tandas == 5) {
+				finalizado = true;
+			}
+		}
+		else {
+			if(tandas == 3) {
+				finalizado = true;
+			}
+		}
 	}
 	
 	/**
@@ -64,14 +103,12 @@ public class POODuck {
 	 * @param numPatos, numero de patos en cada tanda.
 	 */
 	private void crearPatos(int numPatos) {
-		patos.clear();
+		patos = new ArrayList<Pato>();
 		Random rnd = new Random();		
 		char tipo = 'N';
+		int pos;
 		for(int i = 0; i < numPatos; i++) {
-			int pos = rnd.nextInt();
-			if(pos < 0) {
-				pos = pos * -1;
-			}
+			pos = Math.abs(rnd.nextInt());
 			if(rondas > 1 && rondas < 5) {
 				tipo = dificultad[pos%2];
 			}
@@ -107,8 +144,7 @@ public class POODuck {
 		}
 		if(tipo == 'B') {
 			patos.add(new PatoBoss());
-		}
-		System.out.println(patos.size());;
+		}		
 	}
 	
 	/**
@@ -117,7 +153,7 @@ public class POODuck {
 	 * @return El puntaje del jugador.
 	 */
 	public int getPuntaje(int numJugador) {
-		return jugadorUno.getPuntaje();
+		return jugadores.get(numJugador).getPuntaje();
 	}
 	
 	/**
@@ -125,13 +161,18 @@ public class POODuck {
 	 * @param numJugador; jugador del cual se quiere conocer las balas.
 	 * @return Las balas y su tipo.
 	 */
-	public int[] getBalas(int numJugador) {
-		return jugadorUno.getBalas();
+	public int[] getBalas(int jug) {
+		int[] b = new int[3];
+		Bala[] bl = jugadores.get(jug).getBalas();
+		for(int i = 0; i < 3; i++) {
+			b[i] = bl[i].getTipo();
+		}
+		return b;
 	}
 	
 	/**
 	 * Indica la ronda que se esta jugando actualmente.
-	 * @return, la randoa actual.
+	 * @return, la ronda actual.
 	 */
 	public int getRonda() {
 		return rondas;
@@ -145,11 +186,32 @@ public class POODuck {
 		return patos.get(numPato).getTipo();
 	}
 	
-	public int getDireccion(int numPato) {
-		return patos.get(numPato).getDireccion();
+	public int getVelocidad(int numPato) {
+		return patos.get(numPato).getVelocidad();
 	}
 	
 	public int[] getPosicion(int numPato) {
 		return patos.get(numPato).getCuerpo();
+	}
+
+	public void impacto(int jug, int posDisparoX, int posDisparoY ) {
+		boolean i = jugadores.get(jug).disparar(posDisparoX, posDisparoY);
+		if(i) {
+			patosMuertos++;
+			jugadores.get(jug).adicioneBala();
+		}
+	}
+	
+	public boolean estaVivo(int pato) {
+		return patos.get(pato).isAlive();		
+	}
+	
+	public void ubicar(int pato, int col, int fila, int moverX, int moverY) {
+		int[] posiciones = {col,fila,moverX,moverY};
+		patos.get(pato).ubicar(posiciones);
+	}
+
+	public int getTamano(int i) {
+		return patos.get(i).getTamano();
 	}
 }
