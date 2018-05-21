@@ -34,7 +34,6 @@ public class SeleccionMultijugador extends JDialog {
 	
 	private void prepareElementos() {
 		setTitle("MULTIJUGADOR");
-		setResizable(false);
 		ajustarTamano();
 		centrar();
 		botones = new JPanel() {

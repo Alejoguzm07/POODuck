@@ -26,6 +26,10 @@ public class MenuInicial extends JDialog{
 	private URL fondo = this.getClass().getResource("FondoMenu.png");
 	private Image imagenFondo = new ImageIcon(fondo).getImage();
 	
+	/**
+	 * Inicia la ventana de menu inicial.
+	 * @param gui, recibe el tablero de juego.
+	 */
 	public MenuInicial(POODuckGUI gui){
 		juego = gui;
 		contentPane = getContentPane();
@@ -34,6 +38,9 @@ public class MenuInicial extends JDialog{
 		prepareAcciones();
 	}
 	
+	/**
+	 * Prepara los elementos necesarios para mostrar los elementos del menu.
+	 */
 	private void prepareElementos(){		
 		setTitle("MENU PRINCIPAL");
 		setVisible(true);
@@ -41,6 +48,9 @@ public class MenuInicial extends JDialog{
 		prepareBotones();
 	}
 	
+	/**
+	 * Prepara y ajusta todos los botones a mostrar en el menu inicial.
+	 */
 	private void prepareBotones(){
 		botones = new JPanel() {
 			public void paintComponent(Graphics g) {
@@ -63,12 +73,18 @@ public class MenuInicial extends JDialog{
 		contentPane.add(botones,BorderLayout.CENTER);
 	}
 	
+	/**
+	 * Ajusta la estetica del menu inicial.
+	 */
 	private void estetica(){		
 		animaciones();
 		colorFondo();
 		fuentes();
 	}
 	
+	/**
+	 * Ajusta las animaciones de los botones en el menu inicial.
+	 */
 	private void animaciones() {				
 		unJugador.setBorder(null);
 		multiJugador.setBorder(null); 
@@ -80,6 +96,9 @@ public class MenuInicial extends JDialog{
 		salir.setFocusable(false);
 	}
 	
+	/**
+	 * Ajusta el color de los elementos en el menu.
+	 */
 	private void colorFondo() {
 		unJugador.setBackground(colorBoton);
 		multiJugador.setBackground(colorBoton);
@@ -87,6 +106,9 @@ public class MenuInicial extends JDialog{
 		salir.setBackground(colorBoton);
 	}
 	
+	/**
+	 * Ajusta los textos en el menu inicial.
+	 */
 	private void fuentes() {
 		int y = pantalla.height;
 		Font fuente = new Font("Gill Sans Ultra Bold",0,y / 20);
@@ -100,6 +122,9 @@ public class MenuInicial extends JDialog{
 		salir.setFont(fuente);
 	}
 	
+	/**
+	 * Asigna las diferentes funcionalidades a los botones del menu.
+	 */
 	private void prepareAcciones(){
 		WindowAdapter oyenteCerrarVentana = new WindowAdapter(){
 			public void windowClosing(WindowEvent we){
@@ -127,6 +152,9 @@ public class MenuInicial extends JDialog{
 		multiJugador.addActionListener(oyenteBotonMultijugador);
 	}
 	
+	/**
+	 * Cierra el juego en caso de que el usuario le indique.
+	 */
 	private void salga(){
 		int respuesta = JOptionPane.showConfirmDialog(this,"Are you sure?","Exit",JOptionPane.YES_NO_OPTION);
 		if(respuesta == JOptionPane.YES_OPTION){
@@ -137,12 +165,18 @@ public class MenuInicial extends JDialog{
 		}
 	}
 	
+	/**
+	 * Ajusta el tamano de la ventana del menu inicial.
+	 */
 	private void ajustarTamano() {
 		int x = pantalla.width;
 		int y = pantalla.height;
 		setSize(x * 61/100, y * 41/50);
 	}
 	
+	/**
+	 * Ajusta el tamano y la ubicacion de los botones en el menu.
+	 */
 	private void ajustarTamanoBotones() {
 		int x = this.getWidth();
 		int y = this.getHeight();
@@ -160,16 +194,25 @@ public class MenuInicial extends JDialog{
 		salir.setLocation((x - (x / 4))/2,yS);
 	}
 	
+	/**
+	 * Ubica la ventana de menu inicial en el centro de la pantalla.
+	 */
 	private void centrar() {
 		int xpos = (pantalla.width - getSize().width) / 2;
 		int ypos = (pantalla.height - getSize().height) / 2;
 		setLocation(xpos,ypos);		
 	}
 	
+	/**
+	 * Abre una ventana con las opciones de juego individual.
+	 */
 	private void juegoUno(){
 		opcionUnJugador = new SeleccionUnJugador(juego, this);
 	}
 	
+	/**
+	 * Abre una ventana con las opciones de multijugador.
+	 */
 	private void juegoDos(){
 		opcionDosJugadores = new SeleccionMultijugador(juego, this);
 	}
