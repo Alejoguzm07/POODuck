@@ -15,15 +15,22 @@ public class POODuck {
 	private int patosMuertos;
 	private boolean finalizado;
 	
+	/**
+	 * crea un objeto encargado de la logica del juego
+	 */
 	public POODuck() {
 		patos = new ArrayList<Pato>();
 		rondas = 1;
 		tandas = 0;
 		patosMuertos = 0;
 		finalizado = false;
-		tiempoTanda = new Timer();		
+		tiempoTanda = new Timer();
 	}
 	
+	/**
+	 * crea los jugadores del modo de juego indicad
+	 * @param md, un caracter indicando el modo de juego
+	 */
 	public void iniciarJuego(char md) {
 		modo = md;
 		jugadores = new ArrayList<Jugador>();
@@ -56,10 +63,18 @@ public class POODuck {
 		}
 	}
 	
+	/**
+	 * indica si la tanda actual ha sido finalizada
+	 * @return devuelve un booleano que indica si la tanda actual finalizo
+	 */
 	public boolean getFinalizado() {
 		return finalizado;
 	}
 	
+	/**
+	 * indica si los jugadores superaron la ronda actual
+	 * @return devuelve un booleano indicando si la ronda actual ha sido superada
+	 */
 	public boolean gano() {
 		boolean flag = true;
 		if(finalizado) {
@@ -178,22 +193,48 @@ public class POODuck {
 		return rondas;
 	}
 	
+	/**
+	 * indica si el pato especificado esta vivo
+	 * @param numPato, un entero que indica el pato
+	 * @return un booleano que representa si un pato esta vivo o no
+	 */
 	public boolean isAlive(int numPato) {
 		return patos.get(numPato).isAlive();
 	}
 	
+	/**
+	 * indica el tipo del pato indicado
+	 * @param numPato, un entero indicando el pato a analizar
+	 * @return devuelve un entero indicando el tipo de pato
+	 */
 	public int getTipo(int numPato) {
 		return patos.get(numPato).getTipo();
 	}
 	
+	/**
+	 * indica la velocidad del pato especificado
+	 * @param numPato, un entero indicando el pato a analizar
+	 * @return devuelve un entero que representa la velocidad del pato indicado
+	 */
 	public int getVelocidad(int numPato) {
 		return patos.get(numPato).getVelocidad();
 	}
 	
+	/**
+	 * indica la ubicacion de un pato dado
+	 * @param numPato, un entero indicando el pato.
+	 * @return devuelve un arreglo con las posiciones del cuerpo del pato
+	 */
 	public int[] getPosicion(int numPato) {
 		return patos.get(numPato).getCuerpo();
 	}
-
+	
+	/**
+	 * determina si un pato indicado murio en la ronda
+	 * @param jug, un entero indicando el pato
+	 * @param posDisparoX, la posicion en x del disparo
+	 * @param posDisparoY, la posicion en y del disparo
+	 */
 	public void impacto(int jug, int posDisparoX, int posDisparoY ) {
 		boolean i = jugadores.get(jug).disparar(posDisparoX, posDisparoY);
 		if(i) {
@@ -202,15 +243,33 @@ public class POODuck {
 		}
 	}
 	
+	/**
+	 * indica si el pato indicado esta vivo
+	 * @param pato, un entero indicando el pato
+	 * @return devuelve un booleano que indica si el pato esta vivo
+	 */
 	public boolean estaVivo(int pato) {
 		return patos.get(pato).isAlive();		
 	}
 	
+	/**
+	 * ubica al pato especificado
+	 * @param pato, un entero indicando el pato a ubicar
+	 * @param col, un entero indicando la posicion en x del pato
+	 * @param fila, un entero indicando la posicion en y del pato
+	 * @param moverX, un entero que determina la direccion en x del pato
+	 * @param moverY, un entero que determina la direccion en y del pato
+	 */
 	public void ubicar(int pato, int col, int fila, int moverX, int moverY) {
 		int[] posiciones = {col,fila,moverX,moverY};
 		patos.get(pato).ubicar(posiciones);
 	}
-
+	
+	/**
+	 * indica el tamano de un pato indicado
+	 * @param i, un entero indicando el pato
+	 * @return devuelve un entero con el tamano del pato dado
+	 */
 	public int getTamano(int i) {
 		return patos.get(i).getTamano();
 	}

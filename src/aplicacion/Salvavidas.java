@@ -11,6 +11,7 @@ public class Salvavidas extends Bala{
 	public Salvavidas(ArrayList<Pato> pts) {
 		super(pts);
 		tipo = 3;
+		efecto = 'S';
 	}
 	
 	/**

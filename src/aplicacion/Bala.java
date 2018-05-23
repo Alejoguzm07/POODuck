@@ -7,6 +7,7 @@ public class Bala {
 	protected int tipo;
 	protected int puntajeObtenido;
 	protected ArrayList<Pato>patos;
+	protected char efecto;
 	
 	/**
 	 * Crea una bala de tipo Normal.
@@ -16,6 +17,7 @@ public class Bala {
 		tipo = 1;
 		patos = pts;
 		puntajeObtenido = 0;
+		efecto = 'N';
 	}
 	
 	/**
@@ -34,7 +36,7 @@ public class Bala {
 	public void disparar(int px, int py) {
 		if(tipo != 0) {
 			for(int i = 0; i < patos.size(); i++) {
-				puntajeObtenido += patos.get(i).impacto(px, py,tipo);
+				puntajeObtenido += patos.get(i).impacto(px, py,efecto);
 			}
 			tipo = 0;
 		}
@@ -48,5 +50,21 @@ public class Bala {
 		int pun = puntajeObtenido;
 		puntajeObtenido = 0;
 		return pun;
+	}
+	
+	/**
+	 * le otorga habilidades a una bala
+	 * @param fx, caracter que identifica un efecto
+	 */
+	public void agregarEfecto(char fx) {
+		efecto = fx;
+	}
+
+	/**
+	 * indica la habilidad de la bala
+	 * @return un caracer que representa la habilidad de la bala
+	 */
+	public char getEfecto() {
+		return efecto;
 	}
 }

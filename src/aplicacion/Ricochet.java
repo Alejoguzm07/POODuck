@@ -11,5 +11,6 @@ public class Ricochet extends Bala{
 	public Ricochet(ArrayList<Pato> pts) {
 		super(pts);
 		tipo = 2;
+		efecto = 'R';
 	}
 }
