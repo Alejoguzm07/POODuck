@@ -8,19 +8,10 @@ import java.net.URL;
 
 import javax.swing.event.*;
 
-public class SeleccionUnJugador extends JDialog{
+public class SeleccionUnJugador extends Seleccion{
 	
-	private POODuckGUI juego;
-	private MenuInicial menu;
-	private Container contentPane;
 	private JButton clasico;
-	private JButton CPU;
-	private JButton volver;
-	private JPanel botones;
-	private Color colorFuente = Color.WHITE;
-	private Color colorBoton = new Color(105,205,230);	
-	private URL fondo = this.getClass().getResource("FondoSeleccion.png");
-	private Image imagenFondo = new ImageIcon(fondo).getImage();
+	private JButton CPU;		
 	
 	/**
 	 * Abre una ventana con las opciones de juego individual.
@@ -28,19 +19,13 @@ public class SeleccionUnJugador extends JDialog{
 	 * @param menuI, recibe el menu inicial.
 	 */
 	public SeleccionUnJugador(POODuckGUI gui, MenuInicial menuI) {
-		juego = gui;
-		menu = menuI;
-		contentPane = getContentPane();
-		contentPane.setBackground(colorBoton);
-		contentPane.setLayout(new BorderLayout());
-		prepareElementos();
-		prepareAcciones();
+		super(gui, menuI);
 	}
 	
 	/**
-	 * Prepara los elementos necesarios para mostrar la ventana de seleccion.
+	 * Prepara los elementos necesarios para mostrar la ventana de un jugadpr.
 	 */
-	private void prepareElementos() {
+	protected void prepareElementos() {
 		setTitle("UN JUGADOR");
 		ajustarTamano();
 		centrar();
@@ -56,29 +41,9 @@ public class SeleccionUnJugador extends JDialog{
 	}
 	
 	/**
-	 * Ajusta el tamano de los elementos en la ventana de seleccion.
-	 */
-	private void ajustarTamano() {
-		Dimension pantalla = Toolkit.getDefaultToolkit().getScreenSize();
-		int x = pantalla.width;
-		int y = pantalla.height;
-		setSize(x /2, y /2);
-	}
-	
-	/**
-	 * Ubica la ventana de seleccion en el centro de la pantalla.
-	 */
-	private void centrar() {
-		Dimension pantalla = Toolkit.getDefaultToolkit().getScreenSize();
-		int x = (pantalla.width - getSize().width) / 2;
-		int y = (pantalla.height - getSize().height) / 2;
-		setLocation(x,y);
-	}
-	
-	/**
 	 * Prepara y ajusta todos los botones a mostrar en la ventana de seleccion de un jugador.
 	 */
-	private void prepararBotones() {
+	protected void prepararBotones() {
 		clasico = new JButton("Clasico");
 		CPU = new JButton("<html><p align=\"center\">CPU</p><p align=\"center\">VS</p><p align=\\\"center\\\">Jugador</p></html>");
 		volver = new JButton("Volver");
@@ -89,20 +54,9 @@ public class SeleccionUnJugador extends JDialog{
 	}
 	
 	/**
-	 * Ajusta la estetica de los botones al mostrar en la ventana de seleccion un jugador.
-	 */
-	private void estetica(){
-		tamano();
-		posicion();
-		animaciones();
-		colorFondo();
-		fuentes();
-	}
-	
-	/**
 	 * Ajusta el tamano de los botones en pantalla.
 	 */
-	private void tamano() {
+	protected void tamano() {
 		int x = this.getWidth();
 		int y = this.getHeight();
 		clasico.setSize(x / 3, y / 8);
@@ -113,7 +67,7 @@ public class SeleccionUnJugador extends JDialog{
 	/**
 	 * Ajusta la posicion de los botones en pantalla.
 	 */
-	private void posicion() {
+	protected void posicion() {
 		int x = this.getWidth();
 		int y = this.getHeight();
 		clasico.setLocation((x - (x / 3))/6, (y - (y / 8)) / 3);
@@ -124,7 +78,7 @@ public class SeleccionUnJugador extends JDialog{
 	/**
 	 * Ajusta las animaciones de los botones en pantalla.
 	 */
-	private void animaciones() {				
+	protected void animaciones() {				
 		clasico.setBorder(null);
 		CPU.setBorder(null); 
 		volver.setBorder(null); 	
@@ -136,7 +90,7 @@ public class SeleccionUnJugador extends JDialog{
 	/**
 	 * Ajusta el color de fondo de los elementos en pantalla.
 	 */
-	private void colorFondo() {
+	protected void colorFondo() {
 		clasico.setBackground(colorBoton);
 		CPU.setBackground(colorBoton);
 		volver.setBackground(colorBoton);
@@ -145,7 +99,7 @@ public class SeleccionUnJugador extends JDialog{
 	/**
 	 * Ajusta los textos de los elementos en pantalla.
 	 */
-	private void fuentes() {
+	protected void fuentes() {
 		Dimension pantalla = Toolkit.getDefaultToolkit().getScreenSize();
 		int y = pantalla.height;
 		clasico.setForeground(colorFuente); 
@@ -159,7 +113,7 @@ public class SeleccionUnJugador extends JDialog{
 	/**
 	 * Asigna funcionalidades a los botones en pantalla.
 	 */
-	private void prepareAcciones() {
+	protected void prepareAcciones() {
 		ActionListener oyenteBotonCazadores = new ActionListener(){
 			public void actionPerformed(ActionEvent we){
 				unJugadorUno();
@@ -178,13 +132,6 @@ public class SeleccionUnJugador extends JDialog{
 		clasico.addActionListener(oyenteBotonCazadores);
 		CPU.addActionListener(oyenteBotonPajaroCazador);
 		volver.addActionListener(oyenteBotonVolver);
-	}
-	
-	/**
-	 * Vuelve al menu inicial en el caso de ser indicado.
-	 */
-	private void atras() {
-		setVisible(false);	
 	}
 	
 	/**

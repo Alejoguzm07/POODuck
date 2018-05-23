@@ -16,7 +16,7 @@ public class MenuInicial extends JDialog{
 	private JPanel botones;
 	private JButton unJugador;
 	private JButton multiJugador;
-	private JButton instrucciones;
+	private JButton otros;
 	private JButton salir;
 	private POODuckGUI juego;
 	private SeleccionMultijugador opcionDosJugadores;
@@ -60,7 +60,7 @@ public class MenuInicial extends JDialog{
 		botones.setLayout(null);
 		unJugador = new JButton("Un Jugador");		
 		multiJugador = new JButton("Multijugador");		
-		instrucciones = new JButton("Como Jugar");				
+		otros = new JButton("Otros");				
 		salir = new JButton("Salir");
 		ajustarTamano();
 		ajustarTamanoBotones();
@@ -68,7 +68,7 @@ public class MenuInicial extends JDialog{
 		estetica();
 		botones.add(unJugador);
 		botones.add(multiJugador);
-		botones.add(instrucciones);
+		botones.add(otros);
 		botones.add(salir);
 		contentPane.add(botones,BorderLayout.CENTER);
 	}
@@ -88,11 +88,11 @@ public class MenuInicial extends JDialog{
 	private void animaciones() {				
 		unJugador.setBorder(null);
 		multiJugador.setBorder(null); 
-		instrucciones.setBorder(null); 
+		otros.setBorder(null); 
 		salir.setBorder(null);		
 		unJugador.setFocusable(false);	
 		multiJugador.setFocusable(false);	 
-		instrucciones.setFocusable(false);	
+		otros.setFocusable(false);	
 		salir.setFocusable(false);
 	}
 	
@@ -102,7 +102,7 @@ public class MenuInicial extends JDialog{
 	private void colorFondo() {
 		unJugador.setBackground(colorBoton);
 		multiJugador.setBackground(colorBoton);
-		instrucciones.setBackground(colorBoton);
+		otros.setBackground(colorBoton);
 		salir.setBackground(colorBoton);
 	}
 	
@@ -114,11 +114,11 @@ public class MenuInicial extends JDialog{
 		Font fuente = new Font("Gill Sans Ultra Bold",0,y / 20);
 		unJugador.setForeground(colorFuente); 
 		multiJugador.setForeground(colorFuente); 
-		instrucciones.setForeground(colorFuente); 
+		otros.setForeground(colorFuente); 
 		salir.setForeground(colorFuente);		
 		unJugador.setFont(fuente); 
 		multiJugador.setFont(fuente); 
-		instrucciones.setFont(fuente); 
+		otros.setFont(fuente); 
 		salir.setFont(fuente);
 	}
 	
@@ -186,11 +186,11 @@ public class MenuInicial extends JDialog{
 		int yS = yC + y / 12 + y / 18;
 		unJugador.setSize(x / 3 + 90, y / 11);		
 		multiJugador.setSize(x / 3 + 120, y / 11);
-		instrucciones.setSize(x / 3 + 90, y / 11);		
+		otros.setSize(x / 3 + 90, y / 11);		
 		salir.setSize(x / 4, y / 11);
 		unJugador.setLocation((x - (x / 3 + 90))/2, yU);
 		multiJugador.setLocation((x - (x / 3 + 120))/2,yM);
-		instrucciones.setLocation((x - (x / 3 + 90))/2,yC);
+		otros.setLocation((x - (x / 3 + 90))/2,yC);
 		salir.setLocation((x - (x / 4))/2,yS);
 	}
 	
