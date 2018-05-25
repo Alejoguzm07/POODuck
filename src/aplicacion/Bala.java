@@ -67,4 +67,14 @@ public class Bala {
 	public char getEfecto() {
 		return efecto;
 	}
+
+	public void dispararAve(Pajaro p, int posDisparoX, int posDisparoY) {
+		if(tipo != 0) {
+			for(int i = 0; i < patos.size(); i++) {
+				puntajeObtenido += patos.get(i).impacto(posDisparoX, posDisparoY,efecto);
+			}
+			puntajeObtenido += p.impacto(posDisparoX, posDisparoY,efecto);
+			tipo = 0;
+		}
+	}
 }

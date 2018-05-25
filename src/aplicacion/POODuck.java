@@ -52,7 +52,7 @@ public class POODuck {
 	 * @param numPatos, numero de patos en cada tanda.
 	 */
 	public void inicieRonda(int numPatos) {
-		if(gano() && finalizado) {
+		if((gano() && finalizado) || modo == 'V') {
 			rondas++;
 			tandas = 0;
 			patosMuertos = 0;
@@ -243,6 +243,13 @@ public class POODuck {
 		}
 	}
 	
+	public void impactoAveJugador(int jug, int posDisparoX, int posDisparoY ) {
+		boolean i = ((Cazador) jugadores.get(jug)).dispararAve((Pajaro) jugadores.get(1), posDisparoX, posDisparoY);
+		if(i) {
+			patosMuertos++;
+		}
+	}
+	
 	/**
 	 * indica si el pato indicado esta vivo
 	 * @param pato, un entero indicando el pato
@@ -272,5 +279,22 @@ public class POODuck {
 	 */
 	public int getTamano(int i) {
 		return patos.get(i).getTamano();
+	}
+
+	public void ubicarAve(int posX, int posY, int moverCol, int moverFila) {
+		int[] posiciones = {posX, posY, moverCol, moverFila};
+		((Pajaro) jugadores.get(1)).ubicar(posiciones);
+	}
+
+	public boolean estaVivoAve() {
+		return ((Pajaro) jugadores.get(1)).isAlive();
+	}
+
+	public void impactoConPato(int jug, int posDisparoX, int posDisparoY) {
+		boolean i = jugadores.get(jug).dispararAve((Pajaro) jugadores.get(1), posDisparoX, posDisparoY);
+		if(i) {
+			patosMuertos++;
+			jugadores.get(jug).adicioneBala();
+		}
 	}
 }

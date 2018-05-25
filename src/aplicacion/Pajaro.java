@@ -14,6 +14,8 @@ public class Pajaro extends Jugador implements Impactable{
 	
 	public Pajaro() {
 		vida = 5;
+		tamano = 120;
+		vivo = true;
 	}
 	
 	public Bala[] getBalas() {
@@ -69,7 +71,7 @@ public class Pajaro extends Jugador implements Impactable{
 		if(vivo) {
 			int radio = tamano / 2;
 			if(ef == 'r') {
-				radio = 5 * 55;
+				radio = 5 * 100;
 			}
 			int distCabeza = (int) Math.hypot(cabezaX - x, cabezaY - y);
 			int distCuerpo = (int) Math.hypot(cuerpoX - x, cuerpoY - y);
@@ -79,13 +81,14 @@ public class Pajaro extends Jugador implements Impactable{
 					pun = puntaje;
 				}
 			}
+			System.out.println(pun);
 		}
 		return pun;		
 	}
 
 	/**
 	 * revisa el estado de la vida de un pato
-	 * @return devuelve un booleano que indica si el pat esta muerto
+	 * @return devuelve un booleano que indica si el pato esta muerto
 	 */
 	protected boolean muerto() {
 		if(vida == 0) {
@@ -95,4 +98,12 @@ public class Pajaro extends Jugador implements Impactable{
 		return false;
 	}
 	
+	public boolean isAlive() {
+		return vivo;
+	}
+
+	@Override
+	public boolean dispararAve(Pajaro jugador, int posDisparoX, int posDisparoY) {
+		return false;
+	}
 }

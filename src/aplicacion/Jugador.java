@@ -38,4 +38,6 @@ public abstract class Jugador {
 	 * adiciona una bala especial cuando se derrota un pato.
 	 */
 	public abstract void adicioneBala();
+
+	public abstract boolean dispararAve(Pajaro jugador, int posDisparoX, int posDisparoY);
 }

@@ -33,11 +33,11 @@ public class PatoBlindado extends Pato{
 	 * @param tipo, tipo de bala disparada.
 	 * @return, devuelve el puntaje obtenido en el disparo.
 	 */
-	public int impacto(int x, int y, int tipo) {
+	public int impacto(int x, int y, char efe) {
 		int pun = 0;
 		if(vivo) {
 			int radio = tamano / 2;
-			if(tipo == 2) {
+			if(efe == 's') {
 				radio = 5 * 55;
 			}
 			int distCabeza = (int) Math.hypot(cabezaX - x, cabezaY - y);

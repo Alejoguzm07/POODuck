@@ -112,6 +112,29 @@ public class Cazador extends Jugador{
 			b.agregarEfecto(fx);
 			balas[i] = b;
 		}
+		numBala = 2;
 	}
 
+	public boolean dispararAve(Pajaro paj, int posDisparoX, int posDisparoY) {
+		boolean impacto = false;
+		if(numBala > -1) {
+			int posBala = buscarBala();
+			balas[posBala].dispararAve(paj,posDisparoX,posDisparoY);
+			int p = balas[posBala].getPuntaje();
+			if(p > 0) {
+				if(balas[posBala].getEfecto() == 'R') {
+					incluyaBala('r', 3);
+				}
+				puntaje += p;
+				impacto = true;
+			}
+			else {
+				if(balas[posBala].getEfecto() == 'S') {
+					incluyaBala('N', 1);
+				}
+			}
+			numBala--;
+		}
+		return impacto;
+	}
 }
