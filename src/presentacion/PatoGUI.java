@@ -45,7 +45,7 @@ public class PatoGUI extends Component{
 		panel = pan;
 		pato = pat;
 		Random rd = new Random();
-		pisoY = py + ((ty/500)*600);
+		pisoY = py + ((ty/500)*(450));
 		pisoX = px + (Math.abs(rd.nextInt())%tx);
 		fila = pisoY;
 		col = pisoX;

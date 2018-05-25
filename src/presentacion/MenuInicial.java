@@ -21,6 +21,7 @@ public class MenuInicial extends JDialog{
 	private POODuckGUI juego;
 	private SeleccionMultijugador opcionDosJugadores;
 	private SeleccionUnJugador opcionUnJugador;
+	private SeleccionOtros opcionOtros;
 	private Color colorFuente = Color.WHITE;
 	private Color colorBoton = new Color(105,205,230);	
 	private URL fondo = this.getClass().getResource("FondoMenu.png");
@@ -146,12 +147,28 @@ public class MenuInicial extends JDialog{
 				juegoDos();
 			}
 		};
+		ActionListener oyenteBotonOtros = new ActionListener(){
+			public void actionPerformed(ActionEvent we){
+				otrasOpciones();
+			}
+		};
 		addWindowListener(oyenteCerrarVentana);
 		salir.addActionListener(oyenteBotonSalir);
 		unJugador.addActionListener(oyenteBotonUnJugador);
 		multiJugador.addActionListener(oyenteBotonMultijugador);
+		otros.addActionListener(oyenteBotonOtros);
 	}
 	
+	/**
+	 * Abre una ventana con otras opciones.
+	 */
+	protected void otrasOpciones() {
+		opcionOtros = SeleccionOtros.instanceSeleccionOtros(juego, this);
+		if(opcionOtros != null) {
+			opcionOtros.setVisible(true);
+		}
+	}
+
 	/**
 	 * Cierra el juego en caso de que el usuario le indique.
 	 */
@@ -207,14 +224,20 @@ public class MenuInicial extends JDialog{
 	 * Abre una ventana con las opciones de juego individual.
 	 */
 	private void juegoUno(){
-		opcionUnJugador = new SeleccionUnJugador(juego, this);
+		opcionUnJugador = SeleccionUnJugador.instanceSeleccionUnJugador(juego, this);
+		if(opcionUnJugador != null) {
+			opcionUnJugador.setVisible(true);
+		}
 	}
 	
 	/**
 	 * Abre una ventana con las opciones de multijugador.
 	 */
 	private void juegoDos(){
-		opcionDosJugadores = new SeleccionMultijugador(juego, this);
+		opcionDosJugadores = SeleccionMultijugador.instanceSeleccionMultijugador(juego, this);
+		if(opcionDosJugadores != null) {
+			opcionDosJugadores.setVisible(true);
+		}
 	}
 
 }

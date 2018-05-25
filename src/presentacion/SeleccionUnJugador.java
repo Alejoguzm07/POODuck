@@ -11,19 +11,33 @@ import javax.swing.event.*;
 public class SeleccionUnJugador extends Seleccion{
 	
 	private JButton clasico;
+	private static SeleccionUnJugador selection;
 	private JButton CPU;		
 	
 	/**
-	 * Abre una ventana con las opciones de juego individual.
+	 * Crea una ventana con las opciones de juego individual.
 	 * @param gui, recibe el tablero de juego.
 	 * @param menuI, recibe el menu inicial.
 	 */
-	public SeleccionUnJugador(POODuckGUI gui, MenuInicial menuI) {
+	private SeleccionUnJugador(POODuckGUI gui, MenuInicial menuI) {
 		super(gui, menuI);
 	}
 	
 	/**
-	 * Prepara los elementos necesarios para mostrar la ventana de un jugadpr.
+	 * crea una unica ventana de seleccion de un jugador
+	 * @param juego, el tablero de juego
+	 * @param menuInicial, el menu inical
+	 * @return un objeto de tipo SeleccionUnJugador.
+	 */
+	public static SeleccionUnJugador instanceSeleccionUnJugador(POODuckGUI juego, MenuInicial menuInicial) {
+		if (selection == null){
+			selection = new SeleccionUnJugador(juego,menuInicial);			
+        }
+		return selection;
+	}
+	
+	/**
+	 * Prepara los elementos necesarios para mostrar la ventana de un jugador.
 	 */
 	protected void prepareElementos() {
 		setTitle("UN JUGADOR");
@@ -169,4 +183,5 @@ public class SeleccionUnJugador extends Seleccion{
 			juego.unJugador();*/
 		}
 	}
+	
 }

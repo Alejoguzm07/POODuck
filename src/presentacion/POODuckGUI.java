@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.net.URL;
-import aplicacion.*;
+import aplicacion.POODuck;
 import java.lang.*;
 import javax.swing.event.*;
 
@@ -23,6 +23,7 @@ public class POODuckGUI extends JFrame{
 	private MouseAdapter disparadorMouse;
 	private ArrayList<PatoGUI> patosGUI;
 	private ArrayList<BalaGUI> balasGUI;
+	private PajaroGUI aveJugador;
 	private POODuck juego;
 	private int nump;
 	private ControladorAnimacion hilo;
@@ -31,6 +32,7 @@ public class POODuckGUI extends JFrame{
 	private int tamX;
 	private int tamY;
 	private Timer partidas;
+	private boolean modoPato = false;
 	
 	/**
 	 * Instancia un objeto de tipo POODuckGUI.
@@ -89,16 +91,39 @@ public class POODuckGUI extends JFrame{
 	 * @param jug, jugador que realizo el disparo.
 	 */
 	private void derrotePato(int posDisparoX, int posDisparoY, int jug) {
-		for(int i = 0; i < nump; i++) {
-			juego.ubicar(i, patosGUI.get(i).getCol(), patosGUI.get(i).getFila(), patosGUI.get(i).getMoverCol(), patosGUI.get(i).getMoverFila());
-		}
-		juego.impacto(jug,posDisparoX, posDisparoY);
-		for(int i = 0; i < nump; i++) {
-			boolean b = juego.estaVivo(i);
-			if(!b) {
-				patosGUI.get(i).derribar();
+		if(modoPato) {
+			juego.ubicarAve(aveJugador.getPosX(), aveJugador.getPosY(), aveJugador.getMoverCol(), aveJugador.getMoverfila());
+			for(int i = 0; i < nump; i++) {
+				juego.ubicar(i, patosGUI.get(i).getCol(), patosGUI.get(i).getFila(), patosGUI.get(i).getMoverCol(), patosGUI.get(i).getMoverFila());
 			}
-		}			
+			juego.impactoConPato(jug,posDisparoX, posDisparoY);
+			boolean bp = juego.estaVivoAve();
+			if(!bp) {
+				aveJugador.derribar();
+			}	
+			for(int i = 0; i < nump; i++) {
+				boolean b = juego.estaVivo(i);
+				if(!b) {
+					patosGUI.get(i).derribar();
+				}
+			}
+		}
+		else {
+			for(int i = 0; i < nump; i++) {
+				juego.ubicar(i, patosGUI.get(i).getCol(), patosGUI.get(i).getFila(), patosGUI.get(i).getMoverCol(), patosGUI.get(i).getMoverFila());
+			}
+			juego.impacto(jug,posDisparoX, posDisparoY);
+			for(int i = 0; i < nump; i++) {
+				boolean b = juego.estaVivo(i);
+				if(!b) {
+					patosGUI.get(i).derribar();
+				}
+			}
+		}
+	}
+	
+	private void derroteAve(int posDisparoX, int posDisparoY, int jug) {
+		
 	}
 	
 	/**
@@ -106,6 +131,7 @@ public class POODuckGUI extends JFrame{
 	 * @param n, numero de patos por tanda.
 	 */
 	public void unJugador(int n){
+		modoPato = false;
 		this.mira = Tk.createCustomCursor(imagenMira.getImage(), new Point(1,1), "Mira.png");
 		this.setCursor(mira);
 		juego = new POODuck();
@@ -128,12 +154,57 @@ public class POODuckGUI extends JFrame{
 		ejecutarRondas();
 	}
 	
-	public void multijugador(){
-		setVisible(true);
+	public void multijugador(char modo){
+		modoPato = true;
+		this.mira = Tk.createCustomCursor(imagenMira.getImage(), new Point(1,1), "Mira.png");
+		this.setCursor(mira);
+		juego = new POODuck();
+		nump = 3;
 		ajustarTamano();
-		centrar();	
+		centrar();
+		tablero = new JPanel() {
+			public void paintComponent(Graphics g) {
+				g.drawImage(imagenFondo,getX(),getY(),this.getWidth(),this.getHeight(),this);
+			}
+		};
+		GridLayout layoutTablero = new GridLayout(1,1);
+        tablero.setLayout(layoutTablero);
+        hilo = new ControladorAnimacion(tablero, tamX, tamY, posX, posY);
+        juego.iniciarJuego('V');
+		contentPane.add(tablero);
+		tablero.add(hilo);
+		hilo.empezarHilo();
+		aveJugador = new PajaroGUI();
+		hilo.asignarJugadorAve(aveJugador);
+		setVisible(true);
+		ejecutarRondasAve();
 	}
 	
+	private void ejecutarRondasAve() {
+		partidas = new Timer();
+		TimerTask finTanda = new TimerTask() {
+			public void run() {
+				hilo.finalizarTanda();
+			}
+		};
+		TimerTask tarea = new TimerTask() {
+			@Override
+			public void run() {
+				hilo.iniciarTanda();
+				if(juego.getRonda() == 12 || aveJugador.estaImpactado()) {
+					partidas.cancel();
+					salgaInmediato();
+				}
+				preparePatosClasico();
+				ajustarRonda();
+				prepareBalas(1);
+				ajustePuntaje(1);
+			}
+		};
+		partidas.schedule(tarea, 0, 10000);
+		partidas.schedule(finTanda, 7000, 10000);
+	}
+
 	/**
 	 * Prepara las reacciones hacia las acciones en pantalla de los jugadores.
 	 */
@@ -142,17 +213,66 @@ public class POODuckGUI extends JFrame{
 			public void windowClosing(WindowEvent we){
 				salga();
 			}
-		};
+		};		
 		addWindowListener(oyenteCerrarVentana);
+		
 		disparadorMouse = new MouseAdapter() {
 			public void mousePressed(MouseEvent arg0) {
 				derrotePato(arg0.getX(),arg0.getY(),0);
 				prepareBalas(1);
 				ajustePuntaje(1);
+				derroteAve(arg0.getX(),arg0.getY(),0);
 			}
 		};
 		addMouseListener(disparadorMouse);
+		
+		KeyAdapter oyenteTeclado = new KeyAdapter() {
+			public void keyPressed(KeyEvent ke) {
+				controlarTeclado(ke);
+			}
+			public void keyReleased(KeyEvent ke) {
+				dejarDeOprimirTeclado(ke);
+			}
+		};
+		addKeyListener(oyenteTeclado);
 	}
+	
+	private void controlarTeclado(KeyEvent e) {
+		if(modoPato) {
+			int boton = e.getKeyCode();
+			if(boton == 37) {
+				aveJugador.asignarIzquierda();
+			}
+			if(boton == 38) {
+				aveJugador.asignarArriba();
+			}
+			if(boton == 39) {
+				aveJugador.asignarDerecha();
+			}
+			if(boton == 40) {
+				aveJugador.asignarAbajo();
+			}
+		}
+	}
+	
+	private void dejarDeOprimirTeclado(KeyEvent e) {
+		if(modoPato) {
+			int boton = e.getKeyCode();
+			if(boton == 37) {
+				aveJugador.desAsignarIzquierda();
+			}
+			if(boton == 38) {
+				aveJugador.desAsignarArriba();
+			}
+			if(boton == 39) {
+				aveJugador.desAsignarDerecha();
+			}
+			if(boton == 40) {
+				aveJugador.desAsignarAbajo();
+			}
+		}
+	}
+	
 	
 	/**
 	 * Actualiza los puntajes de los jugadores.

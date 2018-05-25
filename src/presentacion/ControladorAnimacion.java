@@ -21,6 +21,8 @@ public class ControladorAnimacion extends Component{
 	private Integer ronda;
 	private ArrayList<Integer> puntajes;
 	private boolean tandaFinalizada;
+	private PajaroGUI jugadorAve;
+	private boolean isJugadorAve;
 	
 	/**
 	 * Componente que pinta todos los elementos en el tablero de juego.
@@ -41,6 +43,16 @@ public class ControladorAnimacion extends Component{
 		posY = py;
 		ronda = 0;
 		tandaFinalizada = false;
+		isJugadorAve = false;
+	}
+	
+	/**
+	 * Indica si se tiene que pintar el ave controlada por el jugador.
+	 * @param, Instancia del pajaroGUI a ser pintada.
+	 */
+	public void asignarJugadorAve(PajaroGUI ave) {
+		isJugadorAve = true;
+		jugadorAve = ave;
 	}
 	
 	/**
@@ -134,6 +146,14 @@ public class ControladorAnimacion extends Component{
 							}
 						}
 					}
+					if(isJugadorAve) {
+						if(jugadorAve.estaVivo()) {
+							jugadorAve.cambiarNum();
+							jugadorAve.definirDireccion();
+							jugadorAve.moverX();
+							jugadorAve.moverY();
+						}
+					}
 					hiloVolar.sleep(100);
 					repaint();
 				}
@@ -155,15 +175,18 @@ public class ControladorAnimacion extends Component{
 		for(int i = 0; i < balas.size(); i++) {
 			BalaGUI b = balas.get(i);
 			ImageIcon imagenBalas = new ImageIcon(new ImageIcon(getClass().getResource(b.getRuta())).getImage());
-			g.drawImage(imagenBalas.getImage(), (posX+w/48)+((i+1)* w*3/100), posY+((h/500)*830), w*3/100, h*6/100, null);
+			g.drawImage(imagenBalas.getImage(), (posX+w/48)+((i+1)* w*3/100), (posY+((h/500)*580)), w*3/100, h*6/100, null);
+		}
+		if(isJugadorAve) {
+			ImageIcon imagenAve = new ImageIcon(new ImageIcon(getClass().getResource(jugadorAve.getRuta())).getImage());
+			g.drawImage(imagenAve.getImage(), jugadorAve.getPosX(), jugadorAve.getPosY(), 120, 110, null);
 		}
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("Gill Sans Ultra Bold",0, h / 30));
-		g.drawString("R = "+ ronda.toString(), (posX+w/15), posY+((h/500)*785));
+		g.drawString("R = "+ ronda.toString(), (posX+w/15), posY+((h/500)*550));
 		g.setFont(new Font("Gill Sans Ultra Bold",0, h / 15));
 		for(int i = 0; i < puntajes.size(); i++) {
-			g.drawString(puntajes.get(i).toString(), (posX+(w/10)*7), posY+((h/500)*880));
+			g.drawString(puntajes.get(i).toString(), (posX+(w/10)*7), posY+((h/500)*620));
 		}
-		
 	}
 }

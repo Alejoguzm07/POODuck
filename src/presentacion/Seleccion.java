@@ -15,7 +15,7 @@ import javax.swing.JPanel;
 
 public abstract class Seleccion extends JDialog{
 	
-	protected POODuckGUI juego;
+	protected POODuckGUI juego;	
 	protected MenuInicial menu;
 	protected Container contentPane;
 	protected JButton volver;

@@ -11,6 +11,7 @@ import javax.swing.event.*;
 public class SeleccionMultijugador extends Seleccion {	
 	
 	private JButton cazadores;
+	private static SeleccionMultijugador selection;
 	private JButton pajaroCazador;
 
 	/**
@@ -18,8 +19,21 @@ public class SeleccionMultijugador extends Seleccion {
 	 * @param gui, recibe el tablero de juego.
 	 * @param menuI, recibe el menu inicial.
 	 */
-	public SeleccionMultijugador(POODuckGUI gui, MenuInicial menuI) {
+	private SeleccionMultijugador(POODuckGUI gui, MenuInicial menuI) {
 		super(gui, menuI);
+	}
+	
+	/**
+	 * crea una unica ventana de seleccion de Multijugador
+	 * @param juego, el tablero de juego
+	 * @param menuInicial, el menu inical
+	 * @return un objeto de tipo SeleccionMultijugador.
+	 */
+	public static SeleccionMultijugador instanceSeleccionMultijugador(POODuckGUI juego, MenuInicial menuInicial) {
+		if (selection == null){
+			selection = new SeleccionMultijugador(juego,menuInicial);			
+        }
+		return selection;
 	}
 	
 	/**
@@ -144,5 +158,5 @@ public class SeleccionMultijugador extends Seleccion {
 		setVisible(false);
 		menu.setVisible(false);
 		juego.multijugador('V');
-	}
+	}	
 }
